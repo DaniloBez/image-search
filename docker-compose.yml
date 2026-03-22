@@ -1,0 +1,34 @@
+services:
+  postgres-db:
+    image: postgres:17-alpine
+    container_name: image-search-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: image-search
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  spring-app:
+    build: .
+    container_name: image-search-app
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres-db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/image-search
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 1234
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      APP_UPLOAD_DIR: /app/uploads/images/
+    volumes:
+      - uploaded_images:/app/uploads/images/
+
+volumes:
+  pg_data:
+  uploaded_images:

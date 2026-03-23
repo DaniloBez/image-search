@@ -29,6 +29,16 @@ services:
     volumes:
       - uploaded_images:/app/uploads/images/
 
+  ollama:
+    image: ollama/ollama:latest
+    container_name: image-search-ai
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+
 volumes:
   pg_data:
   uploaded_images:
+  ollama_data:

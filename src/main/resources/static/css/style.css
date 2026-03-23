@@ -1,0 +1,428 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+/* ==========================================================================
+   1. VARIABLES & RESET
+   ========================================================================== */
+:root {
+    --bg: #0b0f1a;
+    --card-bg: #161b2a;
+    --primary: #6366f1;
+    --accent: #a855f7;
+    --text: #f1f5f9;
+    --text-muted: #94a3b8;
+    --border: #2d3748;
+    --secondary: #334155;
+    --secondary-hover: #475569;
+    --danger: #ef4444;
+    --input-bg: #0f172a;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    margin: 0;
+}
+
+/* ==========================================================================
+   2. LAYOUT & NAVIGATION
+   ========================================================================== */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 5%;
+    background: rgba(22, 27, 42, 0.8);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: linear-gradient(to right, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-muted);
+    margin-left: 1.5rem;
+    transition: 0.3s;
+    font-size: 0.95rem;
+}
+
+.nav-links a.active, .nav-links a:hover {
+    color: var(--text);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.5rem;
+    padding: 2rem 5%;
+}
+
+/* ==========================================================================
+   3. COMPONENTS (Search, Cards, Buttons, Upload)
+   ========================================================================== */
+/* Search Area */
+.search-header {
+    padding: 4rem 1rem;
+    text-align: center;
+}
+
+.search-box {
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto;
+    display: block;
+}
+
+.search-box input {
+    width: 100%;
+    padding: 1rem 4rem 1rem 1.5rem;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: var(--card-bg);
+    color: white;
+    font-size: 1.1rem;
+    outline: none;
+    transition: 0.3s;
+}
+
+.search-box input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+}
+
+.search-box button {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    border: none;
+    background: var(--primary);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s;
+}
+
+.search-box button:hover {
+    background: var(--accent);
+}
+
+/* Cards */
+.card {
+    background: transparent;
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    aspect-ratio: 1 / 1;
+    position: relative;
+    transform: translateZ(0);
+    will-change: transform;
+    transition: transform 0.2s ease-out;
+}
+
+.card:hover { transform: translateY(-6px); }
+
+.card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.card img.loaded { opacity: 1; }
+
+.card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(99, 102, 241, 0.2);
+    opacity: 0;
+    transition: opacity 0.2s ease-out;
+    pointer-events: none;
+}
+
+.card:hover::after { opacity: 1; }
+
+.score-badge {
+    background: var(--primary);
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+/* Upload Elements */
+.drop-zone {
+    display: block;
+    border: 2px dashed var(--primary);
+    border-radius: 16px;
+    padding: 3rem;
+    text-align: center;
+    background: rgba(99, 102, 241, 0.05);
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.drop-zone.over {
+    background: rgba(99, 102, 241, 0.15);
+    border-style: solid;
+}
+
+.upload-item {
+    background: var(--card-bg);
+    padding: 1.2rem;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    border: 1px solid var(--border);
+}
+
+.progress-bg {
+    height: 8px;
+    background: #1e293b;
+    border-radius: 4px;
+    margin-top: 8px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    width: 0;
+    transition: width 0.4s ease;
+}
+
+/* Buttons */
+.btn-primary, .btn-secondary, .btn-danger {
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-primary { background: var(--primary); color: white; }
+.btn-primary:hover:not(:disabled) { background: var(--accent); }
+
+.btn-secondary { background: var(--secondary); color: white; }
+.btn-secondary:hover:not(:disabled) { background: var(--secondary-hover); }
+
+.btn-danger {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+.btn-danger:hover:not(:disabled) {
+    background: var(--danger);
+    color: white;
+}
+
+/* ==========================================================================
+   4. MODAL & EDIT
+   ========================================================================== */
+.modal {
+    display: flex;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    position: fixed;
+    z-index: 1000;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background-color: rgba(11, 15, 26, 0.95);
+    backdrop-filter: blur(8px);
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    transition: opacity 0.2s ease-out, visibility 0.2s ease-out;
+}
+
+.modal.active {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    min-width: 300px;
+    max-width: 900px;
+    height: 85vh;
+    background: var(--card-bg);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.modal-image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border);
+    flex: 1 1 auto;
+    overflow: hidden;
+}
+
+.modal-image-container img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+}
+
+.modal-details {
+    padding: 1.5rem 2rem;
+    background: var(--card-bg);
+    flex: 0 0 40%;
+    overflow-y: auto;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px; right: 15px;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 10;
+    background: rgba(11, 15, 26, 0.6);
+    backdrop-filter: blur(4px);
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; justify-content: center; align-items: center;
+    transition: 0.3s;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.close-btn:hover { background: var(--primary); }
+
+#editForm {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.edit-textarea {
+    width: 100%;
+    flex: 1;
+    background: var(--input-bg);
+    border: 1px solid var(--primary);
+    color: var(--text);
+    padding: 15px;
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 1rem;
+    resize: none;
+    outline: none;
+    line-height: 1.5;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.edit-textarea:focus { box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); }
+
+#modalDesc mark {
+    background: rgba(99, 102, 241, 0.3);
+    color: #e2e8f0;
+    padding: 0 4px;
+    border-radius: 4px;
+    font-weight: 600;
+    box-shadow: 0 0 5px rgba(99, 102, 241, 0.3);
+}
+
+#modalDesc {
+    margin-top: 15px;
+    flex: 1;
+}
+
+/* ==========================================================================
+   5. UTILITIES (Toast, Skeleton, Scrollbar, A11y)
+   ========================================================================== */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+.toast {
+    visibility: hidden;
+    min-width: 250px;
+    background-color: var(--card-bg);
+    border: 1px solid var(--primary);
+    color: var(--text);
+    text-align: center;
+    border-radius: 8px;
+    padding: 16px 24px;
+    position: fixed;
+    z-index: 2000;
+    left: 50%;
+    bottom: 30px;
+    transform: translateX(-50%);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    opacity: 0;
+    transition: opacity 0.3s, bottom 0.3s, visibility 0.3s;
+    font-weight: 600;
+}
+
+.toast.show {
+    visibility: visible;
+    opacity: 1;
+    bottom: 50px;
+}
+
+@keyframes shimmer {
+    0% { background-position: -1000px 0; }
+    100% { background-position: 1000px 0; }
+}
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary); }

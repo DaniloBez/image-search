@@ -1,0 +1,17 @@
+<nav th:fragment="nav(activePage)" aria-label="Головна навігація">
+    <div class="logo">
+        <i class="fas fa-brain" aria-hidden="true"></i> AI Image Search
+    </div>
+    <ul class="nav-links" style="list-style: none; display: flex; margin: 0; padding: 0;">
+        <li>
+            <a th:href="@{/}" th:class="${activePage == 'search' ? 'active' : ''}" th:aria-current="${activePage == 'search' ? 'page' : 'false'}">
+                <i class="fas fa-search" aria-hidden="true"></i> Пошук
+            </a>
+        </li>
+        <li>
+            <a th:href="@{/upload}" th:class="${activePage == 'upload' ? 'active' : ''}" th:aria-current="${activePage == 'upload' ? 'page' : 'false'}">
+                <i class="fas fa-cloud-upload-alt" aria-hidden="true"></i> Завантажити
+            </a>
+        </li>
+    </ul>
+</nav>

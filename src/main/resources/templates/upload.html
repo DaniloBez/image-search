@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Upload - Image Search</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+<nav th:replace="~{fragments/nav :: nav('upload')}"></nav>
+
+<main class="container">
+    <section id="dropZone" class="drop-zone" tabindex="0" role="region" aria-label="Зона завантаження файлів">
+        <i class="fas fa-file-import" style="font-size: 3rem; margin-bottom: 1rem; color: var(--primary);" aria-hidden="true"></i>
+        <h2 style="font-size: 1.5rem; margin: 0 0 0.5rem 0; color: var(--text);">Drag & Drop зображення сюди</h2>
+        <p style="color: var(--text-muted); margin: 0;">або натисніть, щоб вибрати файли</p>
+
+        <label for="fileInput" class="sr-only">Виберіть файли</label>
+        <input type="file" id="fileInput" multiple hidden>
+    </section>
+
+    <section class="upload-list" id="uploadList" aria-live="polite">
+    </section>
+
+    <section id="actionsArea" style="margin-top: 2rem; text-align: center; display: none;">
+        <button type="button" id="rebuildBtn" class="btn-primary" onclick="startRebuild()" style="padding: 1rem 2.5rem;">
+            <i class="fas fa-sync-alt" aria-hidden="true"></i> Зберегти та оновити індекс
+        </button>
+    </section>
+</main>
+
+<script th:src="@{/js/upload.js}"></script>
+</body>
+</html>

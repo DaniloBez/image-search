@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Image Search Engine</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+<nav th:replace="~{fragments/nav :: nav('search')}"></nav>
+
+<main>
+    <header class="search-header">
+        <h1>Інтелектуальний пошук зображень</h1>
+        <form th:action="@{/}" method="get" class="search-box">
+            <label for="searchInput" class="sr-only">Введіть запит для пошуку зображення</label>
+            <input type="text" id="searchInput" name="q" th:value="${query}" placeholder="Опишіть те, що хочете знайти (наприклад: night city)...">
+            <button type="submit" aria-label="Шукати">
+                <i class="fas fa-search" aria-hidden="true"></i>
+            </button>
+        </form>
+    </header>
+
+    <section class="grid" aria-label="Результати пошуку">
+        <article class="card skeleton" th:each="res : ${results}" tabindex="0"
+                 th:data-id="${res.id}"
+                 th:data-url="${res.displayUrl}"
+                 th:data-title="${res.fileName}"
+                 th:data-desc="${res.aiDescription}"
+                 th:data-score="${#numbers.formatDecimal(res.score * 100, 1, 1)} + '%'">
+            <img th:src="${res.thumbnailUrl}"
+                 th:alt="${'Зображення: ' + res.fileName}"
+                 loading="lazy"
+                 decoding="async"
+                 onload="this.classList.add('loaded'); this.parentElement.classList.remove('skeleton');">
+        </article>
+    </section>
+
+    <section th:if="${results != null and #lists.isEmpty(results)}" style="text-align: center; padding: 5rem 1rem; color: var(--text-muted);" aria-live="polite">
+        <i class="fas fa-search" style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.5;" aria-hidden="true"></i>
+        <h2>На жаль, нічого не знайдено</h2>
+        <p>Спробуйте змінити запит або завантажити нові зображення.</p>
+    </section>
+</main>
+
+<div id="imageModal" class="modal" role="dialog" aria-labelledby="modalTitle" aria-modal="true">
+    <div class="modal-content">
+        <button type="button" class="close-btn" aria-label="Закрити вікно">&times;</button>
+        <figure class="modal-image-container" style="margin: 0;">
+            <img id="modalImg" src="" alt="Повний розмір зображення">
+        </figure>
+
+        <div class="modal-details">
+            <header style="display:flex; justify-content:space-between; align-items: center; gap: 1rem;">
+                <h2 id="modalTitle" style="margin: 0; word-break: break-all;"></h2>
+                <span id="modalScore" class="score-badge"></span>
+            </header>
+
+            <p id="modalDesc" style="margin-top:20px; font-size:1.1rem; border-left:4px solid var(--primary); padding-left:15px; color: var(--text-muted);"></p>
+
+            <div id="editForm" style="display: none; margin-top: 15px;">
+                <label for="editDescInput" class="sr-only">Редагувати опис зображення</label>
+                <textarea id="editDescInput" class="edit-textarea" rows="5"></textarea>
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <button type="button" class="btn-primary" onclick="saveDescription()"><i class="fas fa-save" aria-hidden="true"></i> Зберегти</button>
+                    <button type="button" class="btn-secondary" onclick="cancelEditMode()">Скасувати</button>
+                </div>
+            </div>
+
+            <div id="modalActions" style="margin-top: 25px; display: flex; gap: 10px; border-top: 1px solid var(--border); padding-top: 15px;">
+                <button type="button" class="btn-secondary" onclick="enableEditMode()"><i class="fas fa-edit" aria-hidden="true"></i> Редагувати опис</button>
+                <button type="button" class="btn-danger" onclick="deleteImage()"><i class="fas fa-trash" aria-hidden="true"></i> Видалити</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/search.js}"></script>
+</body>
+</html>

@@ -69,7 +69,7 @@ public class SearchService {
             newModel.addDocumentLength(docId, Math.sqrt(documentLength));
 
             localIndex.forEach((term, metadata) ->
-                    data.computeIfAbsent(term, _ -> new ArrayList<>()).add(metadata)
+                    data.computeIfAbsent(term, k -> new ArrayList<>()).add(metadata)
             );
         }
 
